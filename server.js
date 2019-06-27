@@ -1,21 +1,19 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var path = require("path");
 
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
 // It works on the client and on the server
 var axios = require("axios");
 var cheerio = require("cheerio");
-/* var exphbs = require("express-handlebars");
-
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars"); */
 
 // Require all models
 var db = require("./models");
 
-var PORT = 3000;
+// port for use
+var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
@@ -30,8 +28,24 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
+var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({ defaultLayout: "main",
+partialsDir: path.join(__dirname, "/views/layouts/partials") }));
+app.set("view engine", "handlebars");
+
 // Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/crypto", { useNewUrlParser: true });
+
+var db = mongoose.connection;
+
+db.on("error", function(err) {
+  console.log("Mongoose Error: ", err);
+});
+
+db.once("open", function() {
+  console.log("Mongoose onnection successful");
+});
 
 // Routes
 
@@ -69,6 +83,28 @@ app.get("/scrape", function(req, res) {
     // Send a message to the client
     res.send("Scrape Complete");
   });
+});
+
+//use get request to render our handlebar home page
+app.get("/", function(req, res) {
+  db.Article.find({saved: false}, function(err, dbArticle) {
+    var hbsObject = {
+      article: dbArticle
+    };
+    console.log(hbsObject);
+    res.render("home", hbsObject);
+  });
+});
+
+app.get("/saved", function(req, res) {
+  db.Article.find({saved: true})
+    .populate("note")
+    .then(function (err, dbArticle) {
+      var hbsObject = {
+        article: dbArticle
+      };
+      res.render("saved", hbsObject);
+    });
 });
 
 // Route for getting all Articles from the db
