@@ -7,6 +7,10 @@ var mongoose = require("mongoose");
 // It works on the client and on the server
 var axios = require("axios");
 var cheerio = require("cheerio");
+/* var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars"); */
 
 // Require all models
 var db = require("./models");
@@ -113,6 +117,16 @@ app.post("/articles/:id", function(req, res) {
     })
     .catch(function(err) {
       // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+app.delete("/saved/:id", function(req, res) {
+  db.Note.remove({_id: req.params.id})
+    .then(function(dbNote) {
+      res.json(dbNote);
+    })
+    .catch(function(err) {
       res.json(err);
     });
 });
