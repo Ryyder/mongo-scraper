@@ -5,16 +5,13 @@ var Schema = mongoose.Schema;
 
 // Create the Note schema
 var NoteSchema = new Schema({
-  name: {
-    type: String,
-    trim: true,
-    required: "Name is Required"
-  },
-  body: {
-    type: String,
-    trim: true,
-    required: "Comment is Required"
-  }
+    body: {
+        type: String
+    },
+    article: {
+        type: Schema.Types.ObjectId,
+        ref: "Article"
+    }
 });
 
 // Create the Note model with the NoteSchema
