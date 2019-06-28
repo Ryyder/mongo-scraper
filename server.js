@@ -73,12 +73,12 @@ app.get("/scrape", function(req, res) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
-    // Now, we grab every h2 within an article tag, and do the following:
+    // Now, we grab every a.stream-article element, and do the following:
     $("a.stream-article").each(function(i, element) {
       // Save an empty result object
       var result = {};
 
-      // Add the text and href of every link, and save them as properties of the result object
+      // at this level, we can extract the title and href from the <a> element. We can also extract the summary by going down a level to the div.meta -> p element, and grabbing the text out of it. We then save them as properties of the result object
       result.title = $(this).attr("title");
       result.link = $(this).attr("href");
       result.summary = $(this).children("div.meta").children("p").text();
