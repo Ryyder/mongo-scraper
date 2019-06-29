@@ -48,8 +48,18 @@ mongoose.connect("mongodb://localhost/crypto", { useNewUrlParser: true });
 // ======
 
 //GET requests to render Handlebars pages
+/* app.get("/", function(req, res) {
+  Article.find({saved: false}, function(error, data) {
+    var hbsObject = {
+      article: data
+    };
+    console.log(hbsObject);
+    res.render("home", hbsObject);
+  });
+}); */
+
 app.get("/", function(req, res) {
-  Article.find({"saved": false}, function(error, data) {
+  Article.find({saved: false}, (error, data) => {
     var hbsObject = {
       article: data
     };
@@ -59,7 +69,7 @@ app.get("/", function(req, res) {
 });
 
 app.get("/saved", function(req, res) {
-  Article.find({"saved": true}).populate("notes").exec(function(error, articles) {
+  Article.find({saved: true}).populate("notes").exec(function(error, articles) {
     var hbsObject = {
       article: articles
     };
@@ -145,7 +155,7 @@ app.get("/articles/:id", function(req, res) {
 // Save an article
 app.post("/articles/save/:id", function(req, res) {
       // Use the article id to find and update its saved boolean
-      Article.findOneAndUpdate({ "_id": req.params.id }, { "saved": true})
+      Article.findOneAndUpdate({ _id: req.params.id }, { "saved": true})
       // Execute the above query
       .exec(function(err, doc) {
         // Log any errors
@@ -162,7 +172,7 @@ app.post("/articles/save/:id", function(req, res) {
 // Delete an article
 app.post("/articles/delete/:id", function(req, res) {
       // Use the article id to find and update its saved boolean
-      Article.findOneAndUpdate({ "_id": req.params.id }, {"saved": false, "notes": []})
+      Article.findOneAndUpdate({ _id: req.params.id }, {"saved": false, "notes": []})
       // Execute the above query
       .exec(function(err, doc) {
         // Log any errors
@@ -194,7 +204,7 @@ app.post("/notes/save/:id", function(req, res) {
     // Otherwise
     else {
       // Use the article id to find and update it's notes
-      Article.findOneAndUpdate({ "_id": req.params.id }, {$push: { "notes": note } })
+      Article.findOneAndUpdate({ _id: req.params.id }, {$push: { "notes": note } })
       // Execute the above query
       .exec(function(err) {
         // Log any errors
@@ -214,14 +224,14 @@ app.post("/notes/save/:id", function(req, res) {
 // Delete a note
 app.delete("/notes/delete/:note_id/:article_id", function(req, res) {
   // Use the note id to find and delete it
-  Note.findOneAndRemove({ "_id": req.params.note_id }, function(err) {
+  Note.findOneAndRemove({ _id: req.params.note_id }, function(err) {
     // Log any errors
     if (err) {
       console.log(err);
       res.send(err);
     }
     else {
-      Article.findOneAndUpdate({ "_id": req.params.article_id }, {$pull: {"notes": req.params.note_id}})
+      Article.findOneAndUpdate({ _id: req.params.article_id }, {$pull: {"notes": req.params.note_id}})
        // Execute the above query
         .exec(function(err) {
           // Log any errors
