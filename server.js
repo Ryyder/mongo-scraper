@@ -58,7 +58,7 @@ mongoose.connect("mongodb://localhost/crypto", { useNewUrlParser: true });
   });
 }); */
 
-app.get("/", function(req, res) {
+app.get("/", (req, res) => {
   Article.find({saved: false}, (error, data) => {
     var hbsObject = {
       article: data
@@ -68,8 +68,17 @@ app.get("/", function(req, res) {
   });
 });
 
-app.get("/saved", function(req, res) {
+/* app.get("/saved", function(req, res) {
   Article.find({saved: true}).populate("notes").exec(function(error, articles) {
+    var hbsObject = {
+      article: articles
+    };
+    res.render("saved", hbsObject);
+  });
+}); */
+
+app.get("/saved", (req, res) => {
+  Article.find({saved: true}).populate("notes").exec((error, articles) => {
     var hbsObject = {
       article: articles
     };
@@ -77,14 +86,54 @@ app.get("/saved", function(req, res) {
   });
 });
 
-app.get("/scrape", function(req, res) {
+//app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
-  axios.get("https://www.coindesk.com/").then(function(response) {
+  //axios.get("https://www.coindesk.com/").then(function(response) {
+    // Then, we load that into cheerio and save it to $ for a shorthand selector
+    //var $ = cheerio.load(response.data);
+
+    // Now, we grab every a.stream-article element, and do the following:
+    //$("a.stream-article").each(function(i, element) {
+      // Save an empty result object
+      //var result = {};
+
+      // at this level, we can extract the title and href from the <a> element. We can also extract the summary by going down a level to the div.meta -> p element, and grabbing the text out of it. We then save them as properties of the result object
+      //result.title = $(this).attr("title");
+      //result.link = $(this).attr("href");
+      //result.summary = $(this).children("div.meta").children("p").text();
+
+      //console.log(result);
+
+      //we create a new entry using the Article model
+      //pass the result object to entry
+      //var entry = new Article(result);
+
+      // Now, save that entry to the db
+      //entry.save(function(err, doc) {
+        // Log any errors
+        //if (err) {
+          //console.log(err);
+        //}
+        // Or log the doc
+        //else {
+          //console.log(doc);
+        //}
+      //});
+    //});
+
+    // Send a message to the client
+    //res.send("Scrape Complete");
+  //});
+//});
+
+app.get("/scrape", (req, res) => {
+  // First, we grab the body of the html with axios
+  axios.get("https://www.coindesk.com/").then((response) => {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
     // Now, we grab every a.stream-article element, and do the following:
-    $("a.stream-article").each(function(i, element) {
+    $("a.stream-article").each((i, element) => {
       // Save an empty result object
       var result = {};
 
@@ -100,7 +149,7 @@ app.get("/scrape", function(req, res) {
       var entry = new Article(result);
 
       // Now, save that entry to the db
-      entry.save(function(err, doc) {
+      entry.save((err, doc) => {
         // Log any errors
         if (err) {
           console.log(err);
