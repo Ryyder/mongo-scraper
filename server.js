@@ -102,7 +102,7 @@ app.get("/", (req, res) => {
   });
 });
 
-//when we hit our saved api path...
+//our saved api path...
 app.get("/saved", (req, res) => {
   //find article by saved true boolean and populate the note
   Article.find({ saved: true }).populate("notes").exec((error, articles) => {
@@ -115,7 +115,7 @@ app.get("/saved", (req, res) => {
   });
 });
 
-// This will get the articles we scraped from the mongoDB
+// query to find the articles we scraped....
 app.get("/articles", (req, res) => {
   // Grab every doc in the Articles array
   Article.find({}, (error, doc) => {
@@ -130,7 +130,7 @@ app.get("/articles", (req, res) => {
   });
 });
 
-// Grab an article by it's ObjectId
+// query the article by it's ObjectId
 app.get("/articles/:id", (req, res) => {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
   Article.findOne({ _id: req.params.id })
