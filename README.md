@@ -3,7 +3,7 @@
 ## Overview
 
 **Live Demo**
-``
+`https://damp-citadel-18968.herokuapp.com/`
 
 
 An app that scrapes articles from the Coinbase website and lets users save articles and leave notes on those saved articles. Here's how it works.
@@ -33,6 +33,6 @@ An app that scrapes articles from the Coinbase website and lets users save artic
 
 ## Installation
 
-> git clone
+> git clone `https://github.com/Ryyder/mongo-scraper.git`
 
 > npm i
