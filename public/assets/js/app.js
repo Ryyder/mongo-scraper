@@ -9,14 +9,8 @@ $("#scrape").on("click", function() {
     })
 });
 
-//Set clicked nav option to active
-/* $(".navbar-nav li").click(function() {
-   $(".navbar-nav li").removeClass("active");
-   $(this).addClass("active");
-}); */
-
 //save article event handler
-$(".save").on("click", function() {
+$("#save").on("click", function() {
     var thisId = $(this).attr("data-id");
     $.ajax({
         method: "POST",
@@ -27,7 +21,7 @@ $(".save").on("click", function() {
 });
 
 //delete article event handler
-$(".delete").on("click", function() {
+$("#delete").on("click", function() {
     var thisId = $(this).attr("data-id");
     $.ajax({
         method: "POST",
@@ -61,7 +55,7 @@ $(".saveNote").on("click", function() {
 });
 
 //delete note event handler
-$(".deleteNote").on("click", function() {
+$("#deleteNote").on("click", function() {
     var noteId = $(this).attr("data-note-id");
     var articleId = $(this).attr("data-article-id");
     $.ajax({
