@@ -84,7 +84,7 @@ app.get("/scrape", function(req, res) {
 });
 
 //GET requests to render Handlebars pages
-/* app.get("/", (req, res) => {
+ app.get("/", (req, res) => {
   //find the articles with saved false boolean
   Article.find({ saved: false }, (error, data) => {
     //put the data in our hbsobject
@@ -95,7 +95,7 @@ app.get("/scrape", function(req, res) {
     //render our home page with the hbsobject
     res.render("home", hbsObject);
   });
-}); */
+}); 
 
 //our saved api path...
 app.get("/saved", (req, res) => {
