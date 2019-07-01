@@ -6,7 +6,7 @@ $("#scrape").on("click", function() {
     }).then(function(data) {
         console.log(data)
         window.location = "/"
-    })
+    });
 });
 
 //save article event handler
@@ -17,7 +17,7 @@ $("#save").on("click", function() {
         url: "/articles/save/" + thisId
     }).then(function(data) {
         window.location = "/"
-    })
+    });
 });
 
 //delete article event handler
@@ -28,11 +28,11 @@ $("#delete").on("click", function() {
         url: "/articles/delete/" + thisId
     }).then(function(data) {
         window.location = "/saved"
-    })
+    });
 });
 
 //save note event handler
-$(".saveNote").on("click", function() {
+$("#saveNote").on("click", function() {
     var thisId = $(this).attr("data-id");
     if (!$("#noteText" + thisId).val()) {
         alert("please enter a note to save")
@@ -65,5 +65,5 @@ $("#deleteNote").on("click", function() {
         console.log(data)
         $(".modalNote").modal("hide");
         window.location = "/saved"
-    })
+    });
 });
