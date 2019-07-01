@@ -1,7 +1,7 @@
 body {
-    background-image: url("/assets/images/crypto.jpg");
-    background-size: cover;
-    padding-top: 70px;
+  background-image: url("/assets/images/crypto.jpg");
+  background-size: cover;
+  padding-top: 70px;
 }
 
 .deleteNote {
@@ -9,10 +9,14 @@ body {
 }
 
 .previousNotes {
-    display: inline-block;
-    width: 90%
+  display: inline-block;
+  width: 90%
 }
 
 #scrape {
-    margin: 8px 0px;
+  margin: 8px 0px;
+}
+
+.navbar-brand {
+  padding-top: 1.3125rem;
 }
