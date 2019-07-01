@@ -11,7 +11,6 @@ var Note = require("./models/Note.js");
 var Article = require("./models/Article.js");
 
 // Scraping tools
-var request = require("request");
 var cheerio = require("cheerio");
 
 // Set mongoose to leverage built in JavaScript ES6 Promises
@@ -72,7 +71,7 @@ app.get("/scrape", (req, res) => {
 
       // Now, save that entry to the db
       entry.save((err, doc) => {
-        // Log any errors
+        // log any errors
         if (err) {
           console.log(err);
         }
@@ -119,7 +118,7 @@ app.get("/saved", (req, res) => {
 app.get("/articles", (req, res) => {
   // Grab every doc in the Articles array
   Article.find({}, (error, doc) => {
-    // Log any errors
+    // log any errors
     if (error) {
       console.log(error);
     }
@@ -138,7 +137,7 @@ app.get("/articles/:id", (req, res) => {
     .populate("note")
     // now, execute our query
     .exec((error, doc) => {
-      // Log any errors
+      // log any errors
       if (error) {
         console.log(error);
       }
@@ -154,9 +153,9 @@ app.get("/articles/:id", (req, res) => {
 app.post("/articles/save/:id", (req, res) => {
   // query by the article id to find and update its saved boolean
   Article.findOneAndUpdate({ _id: req.params.id }, { saved: true })
-    // Execute the above query
+    // execute the above query
     .exec((err, doc) => {
-      // Log any errors
+      // log any errors
       if (err) {
         console.log(err);
       }
@@ -171,9 +170,9 @@ app.post("/articles/save/:id", (req, res) => {
 app.post("/articles/delete/:id", (req, res) => {
   // Use the article id to find and update its saved boolean
   Article.findOneAndUpdate({ _id: req.params.id }, { saved: false, notes: [] })
-    // Execute the above query
+    // execute the above query
     .exec((err, doc) => {
-      // Log any errors
+      // log any errors
       if (err) {
         console.log(err);
       }
@@ -185,33 +184,32 @@ app.post("/articles/delete/:id", (req, res) => {
 });
 
 
-// Create a new note
+// our new note...
 app.post("/notes/save/:id", (req, res) => {
-  // Create a new note and pass the req.body to the entry
+  // the new note and pass the req.body to the entry
   var newNote = new Note({
     body: req.body.text,
     article: req.params.id
   });
   console.log(req.body)
-  // And save the new note the db
+  // save the new note the db
   newNote.save((error, note) => {
-    // Log any errors
+    // log errors
     if (error) {
       console.log(error);
     }
-    // Otherwise
     else {
-      // Use the article id to find and update it's notes
+      // query by using the article id to find and update it's notes
       Article.findOneAndUpdate({ _id: req.params.id }, { $push: { notes: note } })
-        // Execute the above query
+        // execute the above query
         .exec((err) => {
-          // Log any errors
+          // log any errors
           if (err) {
             console.log(err);
             res.send(err);
           }
           else {
-            // Or send the note to the browser
+            // send the note to the browser
             res.send(note);
           }
         });
@@ -219,20 +217,20 @@ app.post("/notes/save/:id", (req, res) => {
   });
 });
 
-// Delete a note
+// our delete note .....
 app.delete("/notes/delete/:note_id/:article_id", (req, res) => {
   // query by the note id to find and delete it
   Note.findOneAndRemove({ _id: req.params.note_id }, (err) => {
-    // Log any errors
+    // log any errors
     if (err) {
       console.log(err);
       res.send(err);
     }
     else {
       Article.findOneAndUpdate({ _id: req.params.article_id }, { $pull: { notes: req.params.note_id } })
-        // Execute the above query
+        // execute the query
         .exec((err) => {
-          // Log any errors
+          // log any errors
           if (err) {
             console.log(err);
             res.send(err);
