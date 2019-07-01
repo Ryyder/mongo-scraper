@@ -5,6 +5,7 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 var path = require("path");
 var axios = require("axios");
+var exphbs = require("express-handlebars");
 
 // Requiring Note and Article models
 var Note = require("./models/Note.js");
@@ -31,9 +32,6 @@ app.use(bodyParser.urlencoded({
 // Make public a static dir
 app.use(express.static("public"));
 
-// Set Handlebars.
-var exphbs = require("express-handlebars");
-
 app.engine("handlebars", exphbs({
   defaultLayout: "main",
   partialsDir: path.join(__dirname, "/views/layouts/partials")
@@ -42,7 +40,7 @@ app.set("view engine", "handlebars");
 
 // Database configuration with mongoose
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/crypto";
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 //our scrape...
 app.get("/scrape", (req, res) => {
