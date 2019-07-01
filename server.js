@@ -41,7 +41,8 @@ app.engine("handlebars", exphbs({
 app.set("view engine", "handlebars");
 
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/crypto", { useNewUrlParser: true });
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/crypto";
+mongoose.connect(MONGODB_URI);
 
 //our scrape...
 app.get("/scrape", (req, res) => {
