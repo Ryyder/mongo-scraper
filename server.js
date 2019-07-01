@@ -43,9 +43,6 @@ app.set("view engine", "handlebars");
 // Database configuration with mongoose
 mongoose.connect("mongodb://localhost/crypto", { useNewUrlParser: true });
 
-// Routes
-// ======
-
 //our scrape...
 app.get("/scrape", (req, res) => {
   // First, we grab the body of the html with axios
