@@ -1,43 +1,43 @@
-//Handle Scrape button
+//scrape event handler
 $("#scrape").on("click", function() {
     $.ajax({
         method: "GET",
         url: "/scrape",
-    }).done(function(data) {
+    }).then(function(data) {
         console.log(data)
         window.location = "/"
     })
 });
 
 //Set clicked nav option to active
-$(".navbar-nav li").click(function() {
+/* $(".navbar-nav li").click(function() {
    $(".navbar-nav li").removeClass("active");
    $(this).addClass("active");
-});
+}); */
 
-//Handle Save Article button
+//save article event handler
 $(".save").on("click", function() {
     var thisId = $(this).attr("data-id");
     $.ajax({
         method: "POST",
         url: "/articles/save/" + thisId
-    }).done(function(data) {
+    }).then(function(data) {
         window.location = "/"
     })
 });
 
-//Handle Delete Article button
+//delete article event handler
 $(".delete").on("click", function() {
     var thisId = $(this).attr("data-id");
     $.ajax({
         method: "POST",
         url: "/articles/delete/" + thisId
-    }).done(function(data) {
+    }).then(function(data) {
         window.location = "/saved"
     })
 });
 
-//Handle Save Note button
+//save note event handler
 $(".saveNote").on("click", function() {
     var thisId = $(this).attr("data-id");
     if (!$("#noteText" + thisId).val()) {
@@ -49,7 +49,7 @@ $(".saveNote").on("click", function() {
             data: {
               text: $("#noteText" + thisId).val()
             }
-          }).done(function(data) {
+          }).then(function(data) {
               // Log the response
               console.log(data);
               // Empty the notes section
@@ -60,14 +60,14 @@ $(".saveNote").on("click", function() {
     }
 });
 
-//Handle Delete Note button
+//delete note event handler
 $(".deleteNote").on("click", function() {
     var noteId = $(this).attr("data-note-id");
     var articleId = $(this).attr("data-article-id");
     $.ajax({
         method: "DELETE",
         url: "/notes/delete/" + noteId + "/" + articleId
-    }).done(function(data) {
+    }).then(function(data) {
         console.log(data)
         $(".modalNote").modal("hide");
         window.location = "/saved"
