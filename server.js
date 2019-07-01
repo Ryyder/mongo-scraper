@@ -43,14 +43,14 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/crypto";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 //our scrape...
-app.get("/scrape", (req, res) => {
+app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
-  axios.get("https://www.coindesk.com/").then((response) => {
+  axios.get("https://www.coindesk.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
     // Now, we grab every a.stream-article element, and do the following:
-    $("a.stream-article").each((i, element) => {
+    $("a.stream-article").each(function(i, element) {
       // Save an empty result object
       var result = {};
 
@@ -66,7 +66,7 @@ app.get("/scrape", (req, res) => {
       var entry = new Article(result);
 
       // Now, save that entry to the db
-      entry.save((err, doc) => {
+      entry.save(function(err, doc) {
         // log any errors
         if (err) {
           console.log(err);
